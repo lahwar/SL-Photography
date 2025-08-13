@@ -201,6 +201,24 @@
 
 			});
 
+	// Contact Form.
+		var $contactForm = $('#contact-form');
+
+		$contactForm.on('submit', function(event) {
+			event.preventDefault();
+
+			var name = $('#name').val();
+			var email = $('#email').val();
+			var message = $('#message').val();
+
+			var subject = 'Message from ' + name;
+			var body = message + '\r\n\r\nFrom: ' + name + ' (' + email + ')';
+
+			var mailto_link = 'mailto:sofiene.lahouar@example.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+
+			window.location.href = mailto_link;
+		});
+
 	// Main.
 		var $main = $('#main');
 
