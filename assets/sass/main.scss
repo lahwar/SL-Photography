@@ -4,7 +4,7 @@
 @import 'libs/vendor';
 @import 'libs/breakpoints';
 @import 'font-awesome.min.css';
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300italic,400,400italic');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap');
 
 
 // Breakpoints.
@@ -37,15 +37,18 @@
 
 // Component.
 
-	@import 'components/button';
-	@import 'components/form';
-	@import 'components/icon';
-	@import 'components/list';
-	@import 'components/actions';
-	@import 'components/icons';
-	@import 'components/table';
-	@import 'components/panel';
-	@import 'components/poptrox-popup';
+@import 'components/buttons';
+@import 'components/form';
+@import 'components/icon';
+@import 'components/list';
+@import 'components/actions';
+@import 'components/icons';
+@import 'components/table';
+@import 'components/panel';
+@import 'components/poptrox-popup';
+@import 'components/hero';
+@import 'components/cards';
+@import 'components/overlays';
 
 // Layout.
 

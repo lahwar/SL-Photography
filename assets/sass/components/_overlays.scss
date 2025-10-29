@@ -1,0 +1,66 @@
+/* Overlays */
+
+	#main {
+		&:after {
+			background: transparentize(_palette(bg), 0.35);
+			content: '';
+			display: block;
+			height: 100%;
+			left: 0;
+			opacity: 0;
+			position: absolute;
+			top: 0;
+			transition: opacity _duration(panel) ease, visibility _duration(panel) ease;
+			visibility: hidden;
+			width: 100%;
+			z-index: 1;
+		}
+
+		.thumb .image {
+			&:after {
+				background: linear-gradient(180deg, transparent 45%, transparentize(_palette(bg), 0.25) 100%);
+				content: '';
+				display: block;
+				height: 100%;
+				left: 0;
+				opacity: 0;
+				position: absolute;
+				top: 0;
+				transition: opacity 0.5s ease;
+				width: 100%;
+				z-index: 1;
+			}
+		}
+	}
+
+	.thumb {
+		.image {
+			position: relative;
+		}
+
+		&:hover .image:after,
+		&:focus-within .image:after {
+			opacity: 1;
+		}
+	}
+
+	body.content-active {
+		#main {
+			filter: blur(6px);
+
+			&:after {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+	}
+
+	body.is-preload {
+		#main {
+			filter: none;
+
+			.thumb {
+				transition-delay: 0.15s;
+			}
+		}
+	}
