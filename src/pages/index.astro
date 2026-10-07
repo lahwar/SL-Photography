@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ChapterIndex from '../components/ChapterIndex.astro';
+import Chapter from '../components/Chapter.astro';
+import Outro from '../components/Outro.astro';
+import Footer from '../components/Footer.astro';
+import Lightbox from '../components/Lightbox.astro';
+import { chapters } from '../data/chapters';
+---
+
+<Base>
+  <Header />
+  <main id="main">
+    <Hero />
+    <ChapterIndex />
+    {chapters.map((chapter) => <Chapter chapter={chapter} />)}
+    <Outro />
+  </main>
+  <Footer />
+  <Lightbox />
+</Base>

@@ -1,0 +1,8 @@
+---
+// STUB — owned by the `gallery` agent. Contract: props { chapter: Chapter }. <section id={chapter.id} aria-labelledby>, heading block + <PhotoGrid photos={photosByChapter(chapter.id)} />.
+import type { Chapter } from '../data/chapters';
+interface Props { chapter: Chapter }
+const { chapter } = Astro.props;
+---
+
+<section id={chapter.id}><h2>{chapter.title}</h2></section>
