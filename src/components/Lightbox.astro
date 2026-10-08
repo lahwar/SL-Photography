@@ -1,6 +1,174 @@
 ---
-// STUB — owned by the `gallery` agent. Contract: no props. Native <dialog>; keyboard, swipe, deep-link hash #<photo.id>, focus return. Script in src/scripts/lightbox.ts.
-
+// Contract: no props. Native <dialog>, always dark. Behaviour lives in src/scripts/lightbox.ts.
 ---
 
-<dialog></dialog>
+<dialog class="lightbox" aria-label="Photo viewer">
+  <div class="stage">
+    <img alt="" sizes="100vw" decoding="async" />
+  </div>
+  <div class="bar mono">
+    <p class="caption">
+      <span class="main"></span>
+      <span class="sub"></span>
+    </p>
+    <p class="counter" aria-live="polite"></p>
+  </div>
+  <button type="button" class="btn close" aria-label="Close viewer">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"
+      ><path d="M5 5l14 14M19 5L5 19"></path></svg
+    >
+  </button>
+  <button type="button" class="btn prev" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"
+      ><path d="M15 4l-8 8 8 8"></path></svg
+    >
+  </button>
+  <button type="button" class="btn next" aria-label="Next photo">
+    <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"
+      ><path d="M9 4l8 8-8 8"></path></svg
+    >
+  </button>
+</dialog>
+
+<script>
+  import '../scripts/lightbox';
+</script>
+
+<style>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    overflow: hidden;
+    background: var(--dark-bg);
+    color: var(--dark-ink);
+  }
+
+  .lightbox[open] {
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .lightbox::backdrop {
+    background: var(--dark-bg);
+  }
+
+  .stage {
+    min-height: 0;
+    padding: var(--space-16) var(--space-2) var(--space-2);
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .stage img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 1;
+    transition: opacity 200ms ease;
+  }
+
+  .stage img.out {
+    opacity: 0;
+  }
+
+  .bar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-2) var(--space-4) var(--space-4);
+    color: var(--dark-muted);
+  }
+
+  .caption {
+    display: grid;
+    gap: var(--space-1);
+  }
+
+  .main {
+    color: var(--dark-ink);
+  }
+
+  .counter {
+    flex: none;
+    /* Leaves room for the overlaid arrows on small screens. */
+  }
+
+  .btn {
+    position: absolute;
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--dark-bg) 65%, transparent);
+    color: var(--dark-ink);
+    cursor: pointer;
+  }
+
+  .btn:hover {
+    border-color: var(--dark-muted);
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--dark-ink);
+    outline-offset: 2px;
+  }
+
+  .close {
+    top: var(--space-3);
+    right: var(--space-3);
+  }
+
+  .prev,
+  .next {
+    top: calc(50% - 1.375rem);
+  }
+
+  .prev {
+    left: var(--space-2);
+  }
+
+  .next {
+    right: var(--space-2);
+  }
+
+  @media (min-width: 40rem) {
+    .stage {
+      padding-inline: var(--space-16);
+      padding-bottom: var(--space-4);
+    }
+
+    .bar {
+      padding-inline: var(--space-16);
+    }
+
+    .prev {
+      left: var(--space-3);
+    }
+
+    .next {
+      right: var(--space-3);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stage img {
+      transition: none;
+    }
+  }
+
+  /* Lock page scroll while the viewer is open. */
+  :global(html:has(.lightbox[open])) {
+    overflow: hidden;
+  }
+</style>
