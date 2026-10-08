@@ -1,0 +1,59 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+const home = import.meta.env.BASE_URL;
+---
+
+<Base title="Not found — SL Photography" index={false}>
+  <Header />
+  <main id="main" class="lost">
+    <div class="container inner">
+      <p class="mono code">Error 404</p>
+      <h1 class="display title">Lost the frame.</h1>
+      <a class="home mono" href={home}>Back to the photographs <span aria-hidden="true">→</span></a>
+    </div>
+  </main>
+  <Footer />
+</Base>
+
+<style is:global>
+  body {
+    display: flex;
+    flex-direction: column;
+  }
+</style>
+
+<style>
+  .lost {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding-block: var(--space-24);
+    text-align: center;
+  }
+  .inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+  .code {
+    color: var(--muted);
+  }
+  .title {
+    font-size: var(--text-display);
+  }
+  .home {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 2.75rem;
+    color: var(--ember);
+    text-underline-offset: 0.35em;
+  }
+  .home:hover {
+    color: var(--ink);
+  }
+</style>
