@@ -1,0 +1,94 @@
+---
+// Contract: props { photo: Photo; sizes: string }.
+// <figure> with <Picture> (avif/webp), a link to the largest WebP (works without JS) and data-* hooks for the lightbox.
+import type { ImageMetadata } from 'astro';
+import { Picture, getImage } from 'astro:assets';
+import { frameLabel, type Photo } from '../data/photos';
+import { chapterById } from '../data/chapters';
+
+interface Props {
+  photo: Photo;
+  sizes: string;
+}
+
+const { photo, sizes } = Astro.props;
+// Read dimensions from `clone`: touching any property on the image proxy makes Astro ship the original JPEG.
+const original = ((photo.image as ImageMetadata & { clone?: ImageMetadata }).clone ?? photo.image).width;
+const full = Math.min(2400, original);
+
+// Candidate widths that do not upscale, always ending at the largest size we link to.
+const upTo = (list: number[]) => {
+  const out = list.filter((w) => w <= original);
+  if (!out.includes(full)) out.push(full);
+  return out;
+};
+const widths = upTo([480, 800, 1200, 1800, 2400]);
+const lightboxWidths = upTo([1200, 1800, 2400]);
+
+const webp = (width: number) => getImage({ src: photo.image, width, format: 'webp' });
+const lightboxImages = await Promise.all(lightboxWidths.map(webp));
+const fullImage = lightboxImages[lightboxImages.length - 1]; // widths ascend, so the last is `full`
+const srcset = lightboxImages.map((img, i) => `${img.src} ${lightboxWidths[i]}w`).join(', ');
+
+const chapter = chapterById[photo.chapter];
+const frame = frameLabel(photo.frame);
+---
+
+<figure class="reveal">
+  <a
+    href={fullImage.src}
+    data-lightbox
+    data-id={photo.id}
+    data-full={fullImage.src}
+    data-srcset={srcset}
+    data-title={photo.title}
+    data-frame={frame}
+    data-chapter={chapter.title}
+    data-place={photo.place}
+    data-alt={photo.alt}
+  >
+    <Picture
+      src={photo.image}
+      alt={photo.alt}
+      widths={widths}
+      sizes={sizes}
+      formats={['avif']}
+      fallbackFormat="webp"
+      loading="lazy"
+      decoding="async"
+    />
+  </a>
+  <figcaption class="mono">
+    № {frame} — {photo.title}{photo.place && ` · ${photo.place}`}
+  </figcaption>
+</figure>
+
+<style>
+  figure {
+    margin: 0;
+  }
+
+  a {
+    display: block;
+    background: var(--bg-raised);
+    cursor: zoom-in;
+  }
+
+  a:focus-visible {
+    outline-offset: 4px;
+  }
+
+  a :global(img) {
+    width: 100%;
+    transition: opacity 200ms ease;
+  }
+
+  a:hover :global(img) {
+    opacity: 0.88;
+  }
+
+  figcaption {
+    margin-top: var(--space-2);
+    color: var(--muted);
+  }
+</style>

@@ -1,0 +1,129 @@
+---
+// Contract: no props. Five chapter links (numeral, title, count, cover thumb = first photo) to #<chapter.id>.
+import { Picture } from 'astro:assets';
+import { chapters } from '../data/chapters';
+import { photosByChapter } from '../data/photos';
+
+const items = chapters.map((chapter) => {
+  const list = photosByChapter(chapter.id);
+  return { chapter, count: list.length, cover: list[0] };
+});
+---
+
+<nav class="index" aria-label="Chapters">
+  <div class="container">
+    <ol class="list" role="list">
+      {
+        items.map(({ chapter, count, cover }) => (
+          <li class="item">
+            <a href={`#${chapter.id}`} style={`--tint:${chapter.tint}`}>
+              <span class="mono numeral">{chapter.numeral}</span>
+              <span class="display title">{chapter.title}</span>
+              <span class="mono count">{count} photographs</span>
+              <span class="thumb" style={`--focal:${cover.focal ?? '50% 50%'}`}>
+                <Picture
+                  src={cover.image}
+                  alt=""
+                  widths={[240, 480]}
+                  sizes="(min-width: 60rem) 14rem, 12rem"
+                  formats={['avif']}
+                  fallbackFormat="webp"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</nav>
+
+<style>
+  .index {
+    padding-block: var(--space-16);
+  }
+
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: var(--space-4);
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    scroll-padding-inline: var(--gutter);
+    /* Let the row bleed to the screen edge on small screens. */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    padding-bottom: var(--space-2);
+  }
+
+  .item {
+    flex: 0 0 min(12rem, 60vw);
+    scroll-snap-align: start;
+  }
+
+  a {
+    display: grid;
+    gap: var(--space-1);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--line);
+    text-decoration: none;
+  }
+
+  .thumb {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    margin-top: var(--space-3);
+    background: var(--bg-raised);
+  }
+
+  .thumb :global(picture) {
+    display: block;
+    height: 100%;
+  }
+
+  .thumb :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focal);
+    transition: opacity 200ms ease;
+  }
+
+  a:hover .thumb :global(img) {
+    opacity: 0.85;
+  }
+
+  .numeral {
+    color: var(--tint);
+  }
+
+  .title {
+    font-size: var(--text-xl);
+    font-style: italic;
+  }
+
+  .count {
+    color: var(--muted);
+  }
+
+  @media (min-width: 60rem) {
+    .list {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: var(--grid-gap);
+      overflow: visible;
+      margin-inline: 0;
+      padding-inline: 0;
+      padding-bottom: 0;
+    }
+
+    .item {
+      flex: none;
+    }
+  }
+</style>

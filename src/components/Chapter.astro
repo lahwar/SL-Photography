@@ -1,0 +1,94 @@
+---
+// Contract: props { chapter: Chapter }. <section id aria-labelledby>, heading block + PhotoGrid.
+import type { Chapter } from '../data/chapters';
+import { photosByChapter } from '../data/photos';
+import PhotoGrid from './PhotoGrid.astro';
+
+interface Props {
+  chapter: Chapter;
+}
+
+const { chapter } = Astro.props;
+const chapterPhotos = photosByChapter(chapter.id);
+const headingId = `${chapter.id}-title`;
+---
+
+<section id={chapter.id} aria-labelledby={headingId} style={`--tint:${chapter.tint}`}>
+  <div class="container">
+    <header class="head reveal">
+      <p class="mono meta">
+        <span class="numeral">Chapter {chapter.numeral}</span>
+        <span class="count">{chapterPhotos.length} photographs</span>
+      </p>
+      <h2 id={headingId} class="display title">{chapter.title}</h2>
+      <p class="statement">{chapter.statement}</p>
+    </header>
+    <PhotoGrid photos={chapterPhotos} />
+  </div>
+</section>
+
+<style>
+  section {
+    padding-top: var(--space-24);
+  }
+
+  .head {
+    margin-bottom: var(--space-12);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line);
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .numeral {
+    color: var(--tint);
+  }
+
+  .count {
+    color: var(--muted);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+    font-style: italic;
+    margin-bottom: var(--space-4);
+  }
+
+  .statement {
+    max-width: var(--measure);
+    color: var(--muted);
+    font-size: var(--text-lg);
+  }
+
+  @media (min-width: 60rem) {
+    section {
+      padding-top: var(--space-32);
+    }
+
+    .head {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--grid-gap);
+      margin-bottom: var(--space-16);
+    }
+
+    .meta {
+      grid-column: 1 / -1;
+    }
+
+    .title {
+      grid-column: 1 / 7;
+      margin-bottom: 0;
+    }
+
+    .statement {
+      grid-column: 7 / -1;
+      align-self: end;
+    }
+  }
+</style>

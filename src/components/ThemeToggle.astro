@@ -1,0 +1,93 @@
+---
+// Contract: no props. Toggles light/dark, persists to localStorage('theme'),
+// sets <html data-theme>. Base.astro applies the saved value before first paint.
+---
+
+<button type="button" class="theme-toggle" data-theme-toggle aria-label="Switch theme">
+  <svg class="icon icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+  </svg>
+  <svg class="icon icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 50%;
+    color: var(--muted);
+    cursor: pointer;
+    /* Hidden until the script knows the effective theme (the button is inert without JS). */
+    visibility: hidden;
+    transition: color 200ms ease;
+  }
+  .theme-toggle:hover {
+    color: var(--ink);
+  }
+  :global(.js-ready) .theme-toggle {
+    visibility: visible;
+  }
+  /* Moon (go dark) while the page is light; sun (go light) while it is dark. */
+  .icon-sun {
+    display: none;
+  }
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .icon-sun {
+      display: block;
+    }
+    :global(:root:not([data-theme='light'])) .icon-moon {
+      display: none;
+    }
+  }
+  :global(:root[data-theme='dark']) .icon-sun {
+    display: block;
+  }
+  :global(:root[data-theme='dark']) .icon-moon {
+    display: none;
+  }
+</style>
+
+<script>
+  import { themeColor as colors } from '../data/site';
+
+  const root = document.documentElement;
+  type Theme = keyof typeof colors;
+
+  const effective = (): Theme => {
+    const set = root.dataset.theme;
+    if (set === 'light' || set === 'dark') return set;
+    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  };
+
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]');
+
+  const sync = () => {
+    const next: Theme = effective() === 'dark' ? 'light' : 'dark';
+    buttons.forEach((b) => b.setAttribute('aria-label', `Switch to ${next} theme`));
+  };
+
+  buttons.forEach((b) =>
+    b.addEventListener('click', () => {
+      const next: Theme = effective() === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try {
+        localStorage.setItem('theme', next);
+      } catch {}
+      document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]').forEach((m) => {
+        m.content = colors[next];
+      });
+      sync();
+    }),
+  );
+
+  sync();
+  root.classList.add('js-ready');
+</script>
