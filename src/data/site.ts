@@ -19,3 +19,6 @@ export const site = {
   description:
     'SL Photography — photographs by Sofiene Lahouar of the Mediterranean, of Paris and New York, and of the strangers met along the way.',
 } as const;
+
+/** Browser UI color per theme (meta theme-color). Mirrors --bg in tokens.css. */
+export const themeColor = { light: '#f4f0e8', dark: '#121110' } as const;

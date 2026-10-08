@@ -14,10 +14,11 @@
   --line: #ddd5c8;
   --ember: #b8441a; /* accent for text & small UI (AA on --bg) */
   --ember-strong: #d9541e; /* accent for large display only */
+  --on-accent: #fff; /* text on an ember background */
 
   /* Chapter tints — numerals and rules only */
   --tint-salt: #1f5f8b;
-  --tint-stone: #8a6c43;
+  --tint-stone: #7d6038;
   --tint-strangers: var(--ink);
   --tint-ember: var(--ember);
   --tint-green: #4e6b3a;

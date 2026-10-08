@@ -78,7 +78,7 @@ a:hover {
 
 ::selection {
   background: var(--ember-strong);
-  color: #fff;
+  color: var(--on-accent);
 }
 
 /* Utilities */

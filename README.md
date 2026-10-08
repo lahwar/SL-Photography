@@ -26,7 +26,7 @@ src/photos/<chapter>/  original JPEGs (never served directly)
 src/styles/            tokens.css (all design tokens) + global.css (reset, utilities)
 src/components/        one component per section
 src/scripts/           client scripts (kept tiny; JS budget < 10 KB)
-public/                favicon, robots.txt (and CNAME for a custom domain)
+public/                favicon (and CNAME for a custom domain)
 ```
 
 ## How to add a photo
@@ -49,7 +49,7 @@ Light ("paper") and dark ("darkroom") themes follow the OS, and the header toggl
 Pushes to `main` (or `master`) run `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages.
 
 1. In the repository, go to Settings → Pages → Source and choose **GitHub Actions**.
-2. For a custom domain, add a `public/CNAME` file containing the domain and set it under Settings → Pages. The `Sitemap:` URL in `public/robots.txt` must match the site URL (`SITE_BASE_URL`).
+2. For a custom domain, add a `public/CNAME` file containing the domain and set it under Settings → Pages. `robots.txt` is generated from the site URL, so it always points at the right sitemap.
 
 ### Environment variables
 
