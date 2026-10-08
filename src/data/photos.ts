@@ -13,8 +13,8 @@ export interface PhotoEntry {
   alt: string;
   /** Only where certain. Leave undefined otherwise. */
   place?: string;
-  /** Layout hint for the editorial grid. */
-  feature?: 'wide' | 'tall' | 'large';
+  /** 'wide' gives a landscape photo a full-width row of its own. */
+  feature?: 'wide';
   /** CSS object-position used when the image is cropped in the layout (CSS only; sharp ignores it). */
   focal?: string;
 }
@@ -22,17 +22,17 @@ export interface PhotoEntry {
 const entries: Record<ChapterId, PhotoEntry[]> = {
   salt: [
     {
-      file: 'salt/01-sun-rise',
-      title: 'Sun Rise',
-      alt: 'A swimmer flips their wet hair back in an arc of spray, waist-deep in a calm sea, as an orange sun sinks behind a dark hill.',
-      focal: '50% 45%',
-    },
-    {
       file: 'salt/02-flight',
       title: 'Flight',
       alt: 'A boy leaps from a jagged limestone rock toward clear blue water while an older man on the rocks watches, smiling.',
       feature: 'wide',
       focal: '55% 45%',
+    },
+    {
+      file: 'salt/01-sun-rise',
+      title: 'Sun Rise',
+      alt: 'A swimmer flips their wet hair back in an arc of spray, waist-deep in a calm sea, as an orange sun sinks behind a dark hill.',
+      focal: '50% 45%',
     },
     {
       file: 'salt/03-escape',
@@ -48,7 +48,6 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       file: 'salt/05-sea',
       title: 'Sea',
       alt: 'The view from inside a dark ochre sea cave, its arched mouth framing bright blue waves.',
-      feature: 'large',
     },
     {
       file: 'salt/06-family',
@@ -71,7 +70,6 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       file: 'stone/01-regret',
       title: 'Regret',
       alt: 'Black silhouette of a centaur statue carrying off a woman whose arm reaches up into a grey sky.',
-      feature: 'tall',
     },
     {
       file: 'stone/02-marble',
@@ -98,7 +96,6 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       title: 'Moonrise',
       alt: 'Black-and-white silhouette of a man in profile above the rooftops of Paris, a small moon in the sky.',
       place: 'Paris',
-      feature: 'wide',
     },
   ],
   strangers: [
@@ -106,7 +103,6 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       file: 'strangers/01-summer',
       title: 'Summer',
       alt: 'Close portrait of a young man with voluminous curly hair glancing over his bare shoulder, sunlit hills blurred behind.',
-      feature: 'large',
     },
     {
       file: 'strangers/02-life',
@@ -153,7 +149,6 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       file: 'ember/01-chaos',
       title: 'Chaos',
       alt: 'A towering bonfire of stacked wooden pallets erupts in flame and smoke at night while a man takes a selfie in the foreground.',
-      feature: 'tall',
     },
     {
       file: 'ember/02-home',
@@ -170,13 +165,11 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       file: 'ember/04-dancers',
       title: 'Dancers',
       alt: 'A spotlight throws warm light across a mural of three figures caught mid-movement in loose red brushstrokes.',
-      feature: 'wide',
     },
     {
       file: 'ember/05-control',
       title: 'Control',
       alt: 'Black-and-white mural on a tiled wall: a man in a suit with small red devil horns leads a giant saddled pigeon on a rope.',
-      feature: 'wide',
     },
   ],
   green: [
