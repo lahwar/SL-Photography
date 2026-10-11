@@ -81,15 +81,25 @@ if (dlg) {
     else if (e.key === 'ArrowRight') step(1);
   });
 
-  // Swipe
+  // Swipe — one finger only, and never while pinch-zoomed (a sideways drag then pans the photo).
   let x0 = 0;
   let y0 = 0;
+  let pinch = false;
   const stage = text('.stage');
+  const vv = window.visualViewport;
+  const zoomed = () => (vv?.scale ?? 1) > 1.01;
+  vv?.addEventListener('resize', () => stage.classList.toggle('zoomed', zoomed()));
   stage.addEventListener('pointerdown', (e) => {
+    if (!e.isPrimary) {
+      pinch = true;
+      return;
+    }
+    pinch = false;
     x0 = e.clientX;
     y0 = e.clientY;
   });
   stage.addEventListener('pointerup', (e) => {
+    if (!e.isPrimary || pinch || zoomed()) return;
     const dx = e.clientX - x0;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - y0)) step(dx < 0 ? 1 : -1);
   });
