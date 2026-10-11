@@ -97,6 +97,26 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       alt: 'Black-and-white silhouette of a man in profile above the rooftops of Paris, a small moon in the sky.',
       place: 'Paris',
     },
+    {
+      file: 'stone/07-hush',
+      title: 'Hush',
+      alt: 'A weathered stone statue of a bearded man in a ruffed collar and heavy robe, one finger raised to his lips, a blurred arched hall behind him.',
+    },
+    {
+      file: 'stone/08-lament',
+      title: 'Lament',
+      alt: 'Close-up of a worn plaster sculpture of two women entwined, one resting her head on her hand with her mouth open, the other gazing up from beneath her hair.',
+    },
+    {
+      file: 'stone/09-bloom',
+      title: 'Bloom',
+      alt: 'A white plaster sneaker leaning against two white basketballs stacked on a wooden block, dried flowers spilling from holes in the shoe and the upper ball.',
+    },
+    {
+      file: 'stone/10-carried',
+      title: 'Carried',
+      alt: 'A white marble group in a gallery: a standing man and a woman who kisses the head of a limp young figure they carry between them.',
+    },
   ],
   strangers: [
     {
@@ -142,6 +162,11 @@ const entries: Record<ChapterId, PhotoEntry[]> = {
       title: 'Liberation',
       alt: 'A woman in a white beret and gingham dress raises a small French flag beside a vintage U.S. Army truck as a crowd in period clothes waves flags.',
       place: 'Paris',
+    },
+    {
+      file: 'strangers/09-glance',
+      title: 'Glance',
+      alt: 'Detail of an oil painting: a boy with tousled brown hair and a ragged white shirt slipping off one shoulder looks sideways out of the canvas, other figures cropped around him.',
     },
   ],
   ember: [
