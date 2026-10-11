@@ -62,8 +62,14 @@
   .stage {
     min-height: 0;
     padding: var(--space-16) var(--space-2) var(--space-2);
-    touch-action: pan-y;
+    /* Horizontal drags are ours (swipe); vertical pans and pinch-zoom stay with the browser. */
+    touch-action: pan-y pinch-zoom;
     user-select: none;
+  }
+
+  /* Once zoomed in, hand every gesture back to the browser so the photo can be panned sideways. */
+  .stage.zoomed {
+    touch-action: auto;
   }
 
   .stage img {
